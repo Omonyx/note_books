@@ -1,5 +1,5 @@
 {
-  "name": "testerter",
+  "name": "note_book",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,15 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
+    "mongoose": "^9.2.1",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-loading-skeleton": "^3.5.0",
+    "uid2": "^1.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/uid2": "^0.0.2",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
