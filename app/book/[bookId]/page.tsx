@@ -39,6 +39,30 @@ export default function bookPage({ params }: { params: Promise<{ bookId: string 
             alert('error');
         };
     };
+    const userCertify = async () => {
+        const idUser = localStorage.getItem('tokener');
+        if (!idUser) {
+            alert('You aren\'t connected !');
+            window.location.href = '../../login';
+        } else {
+            const response = await fetch(`http://localhost:3000/api/usr/id/${idUser}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                console.log('problem');
+            } else {
+                const user = await response.json();
+                const allBook = new Set(user.data.books);
+                if (!allBook.has(bookId)) {
+                    alert('You aren\'t in this note book !');
+                    window.location.href = '../../';
+                };
+            };
+        };
+    };
 
     const [data, setData] = useState<any>(null);
     const [taskStyle, setTaskStyle] = useState("bg-green-600");
@@ -46,6 +70,7 @@ export default function bookPage({ params }: { params: Promise<{ bookId: string 
     const { bookId } = use(params);
 
     useEffect(() => {
+        userCertify();
         getBook();
     }, []);
 

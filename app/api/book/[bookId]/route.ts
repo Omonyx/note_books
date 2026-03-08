@@ -7,12 +7,13 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     try {
         const body = await req.json();
+        const idBook = uid2(32);
         await Book.create({
-            id: uid2(32),
+            id: idBook,
             name: body.name,
             checkList: [],
         });
-        return NextResponse.json({ message: "Book successfully created !" }, { status: 201 });
+        return NextResponse.json({ message: "Book successfully created !", id: idBook }, { status: 201 });
     } catch (err) {
         return NextResponse.json({ message: "Error", error: err }, { status: 400 });
     };

@@ -20,14 +20,26 @@ export default function BookHandlePage() {
             if (!response.ok) {
                 setInputStyle("bg-red-900")
             } else {
-                console.log(messageRes.data);
-                window.location.href = '../';
+                addBookToUser(messageRes.id);
             };
         } else {
             setInputStyle("bg-red-900");
             console.log("Missing name !");
             alert("Missing name !");
         };
+    };
+    const addBookToUser = async (bookId: String) => {
+        const userId = localStorage.getItem('tokener');
+        console.log(userId);
+        const response = await fetch(`http://localhost:3000/api/usr/id/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                    "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ "bookId": bookId }),
+            },
+        );
+        window.location.href = `./book/${bookId}`;
     };
 
     const [inputValue, setInputValue] = useState("");

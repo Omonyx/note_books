@@ -15,6 +15,7 @@ export default function LogInPage() {
             });
             const messageRes = await response.json();
             console.log(messageRes.message);
+            localStorage.setItem('tokener', messageRes.data.token);
             alert(messageRes.message);
             if (!response.ok) {
                 if (response.status === 404) {
