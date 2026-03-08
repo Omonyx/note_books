@@ -11,7 +11,6 @@ export default async function UserPage({ params }: any) {
     if (!response.ok) {
         notFound();
     }
-    const data = await response.json();
 
     return (
         <div>

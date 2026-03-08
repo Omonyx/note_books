@@ -16,7 +16,6 @@ export default function SignInPage() {
                 },
                 body: JSON.stringify({ "username": username, "email": email, "password": password }),
             });
-            console.log(response);
             const messageRes = await response.json();
             console.log(messageRes.message);
             alert(messageRes.message);
