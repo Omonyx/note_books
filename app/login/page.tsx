@@ -13,10 +13,6 @@ export default function LogInPage() {
                 },
                 body: JSON.stringify({ "username": username, "password": password }),
             });
-            const messageRes = await response.json();
-            console.log(messageRes.message);
-            localStorage.setItem('tokener', messageRes.data.token);
-            alert(messageRes.message);
             if (!response.ok) {
                 if (response.status === 404) {
                     setStyleUsername('bg-red-900');
@@ -25,6 +21,10 @@ export default function LogInPage() {
                 setStylePassword('bg-red-900');
                 setPassword('');
             } else {
+                const messageRes = await response.json();
+                console.log(messageRes.message);
+                localStorage.setItem('tokener', messageRes.data.token);
+                alert(messageRes.message);
                 window.location.href = '../';
             };
         };
@@ -54,8 +54,9 @@ export default function LogInPage() {
             <form>
                 <input className={styleUsername} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" value={username} />
                 <input className={stylePassword} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" value={password} />
-                <button onClick={(e) => getUser(e)} type='submit'>Log in</button>
+                <button className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer" onClick={(e) => getUser(e)} type='submit'>Log in</button>
             </form>
+            <div>You don't have an account ? Come to <a className="text-blue-600" href="../signin">sign in</a> !</div>
         </div>
     );
 }

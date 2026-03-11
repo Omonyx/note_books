@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-export default function BookHandlePage() {
-    const createBook = async (e: React.MouseEvent<HTMLButtonElement>) => {
+export default function CollectionHandlePage() {
+    const createCollection = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (inputValue !== "") {
             setInputStyle("bg-green-600");
-            const response = await fetch(`/api/book/${inputValue}`, {
+            const response = await fetch(`/api/collection/${inputValue}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export default function BookHandlePage() {
             if (!response.ok) {
                 setInputStyle("bg-red-900")
             } else {
-                addBookToUser(messageRes.id);
+                addCollectionToUser(messageRes.id);
             };
         } else {
             setInputStyle("bg-red-900");
@@ -28,7 +28,7 @@ export default function BookHandlePage() {
             alert("Missing name !");
         };
     };
-    const addBookToUser = async (bookId: String) => {
+    const addCollectionToUser = async (collectionId: String) => {
         const userId = localStorage.getItem('tokener');
         console.log(userId);
         const response = await fetch(`http://localhost:3000/api/usr/id/${userId}`, {
@@ -36,10 +36,10 @@ export default function BookHandlePage() {
             headers: {
                     "Content-Type": "application/json",
             },
-            body: JSON.stringify({ "bookId": bookId }),
+            body: JSON.stringify({ "collectionId": collectionId }),
             },
         );
-        window.location.href = `./book/${bookId}`;
+        window.location.href = `./collection/${collectionId}`;
     };
 
     const [inputValue, setInputValue] = useState("");
@@ -48,8 +48,8 @@ export default function BookHandlePage() {
     return (
         <div>
             <form>
-                <input onChange={(e) => setInputValue(e.target.value)} className={inputStyle} type="text" placeholder="Book name" value={inputValue}/>
-                <button onClick={(e) => createBook(e)} type="submit">Create</button>
+                <input onChange={(e) => setInputValue(e.target.value)} className={inputStyle} type="text" placeholder="Collection name" value={inputValue}/>
+                <button className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer" onClick={(e) => createCollection(e)} type="submit">Create</button>
             </form>
         </div>
     )
