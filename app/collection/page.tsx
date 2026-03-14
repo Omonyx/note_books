@@ -36,7 +36,7 @@ export default function CollectionHandlePage() {
             headers: {
                     "Content-Type": "application/json",
             },
-            body: JSON.stringify({ "collectionId": collectionId }),
+            body: JSON.stringify({ "collectionId": collectionId, "collectionName": inputValue }),
             },
         );
         window.location.href = `./collection/${collectionId}`;

@@ -12,14 +12,15 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 };
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     await dbConnect();
-    const { collectionId } = await req.json();
+    const { collectionId, collectionName } = await req.json();
     const { id } = await params;
     const userToUpdate = await User.findOne({ token: id });
 
     if (!userToUpdate) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-    userToUpdate.collections = [...(userToUpdate.collections || []), collectionId];
+    userToUpdate.collections.id = [...(userToUpdate.collections.id || []), collectionId];
+    userToUpdate.collections.name = [...(userToUpdate.collections.name || []), collectionName];
     await userToUpdate.save();
     return NextResponse.json({ message: "okk" }, { status: 201 });
 };

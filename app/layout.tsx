@@ -12,6 +12,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       if (response.ok) {
         const infos = await response.json();
         setUsername(infos.data.username);
+        setLinkUsername("/usr/" + infos.data.username);
       };
     };
   };
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   };
 
   const [username, setUsername] = useState("Log in");
+  const [linkUsername, setLinkUsername] = useState("/login");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search a user..." value={search} />
             <button onClick={(e) => searchUser(e)} className="hover:cursor-pointer" type="submit" >Search</button>
           </form>
-          <a href="/login">{username}</a>
+          <a href={linkUsername}>{username}</a>
         </div>
         <div>{children}</div>
       </body>

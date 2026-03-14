@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     await User.create({
         username: body.username,
         email: body.email,
-        collections: [],
+        collections: { id: [], name: [] },
         token,
         salt,
         hash,
