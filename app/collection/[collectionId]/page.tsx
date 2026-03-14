@@ -1,6 +1,8 @@
 "use client";
 
 import { use, useState, useEffect } from "react";
+import Image from "next/image";
+import trash from "../../../public/trash.png";
 
 export default function collectionPage({ params }: { params: Promise<{ collectionId: string }> }) {
     const addItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -9,7 +11,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             setItemStyle("bg-green-600")
             const parent = document.querySelector("#uncheck");
             const childLi = document.createElement("li");
-            childLi.innerHTML += "<input type='checkbox' />" + " " + itemValue;
+            childLi.innerHTML += "<div class='flex align-center justify-between w-fit'><input type='checkbox' /><div class='ml-1 mr-2 mt-1 mb-1'>" + itemValue + "</div><button><img src='/trash.png' class='w-6 h-6' alt='Trash' /></button></div>";
             parent?.appendChild(childLi);
             setItemValue("");
         } else {
@@ -76,6 +78,15 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
         });
         handleItem(trueList, falseList);
     };
+    const deleteItem = (item: any, version: String) => {
+        const li = item.parentElement.parentElement.parentElement;
+        if (version == "check") {
+            data.data.pageListChecked.pop(li.dataset.id);
+        } else {
+            data.data.pageListUnchecked.pop(li.dataset.id);
+        };
+        li.remove();
+    };
 
     const [data, setData] = useState<any>(null);
     const [itemStyle, setItemStyle] = useState("bg-green-600");
@@ -96,18 +107,22 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             </form>
             <ul id="uncheck">
                 {data?.data?.pageListUnchecked?.map((e: any, i: number) => (
-                    <li key={i}>
-                        <div>
-                            <input type="checkbox" /> {e}
+                    <li key={i} data-id={i}>
+                        <div className="flex align-center justify-between w-fit">
+                            <input type="checkbox" />
+                            <div className="ml-1 mr-2 mt-1 mb-1">{e}</div>
+                            <button onClick={(e) => deleteItem(e.target, "uncheck")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
                         </div>
                     </li>
                 ))}
             </ul>
             <ul id="check">
                 {data?.data?.pageListChecked?.map((e: any, i: number) => (
-                    <li key={i}>
-                        <div>
-                            <input type="checkbox" defaultChecked={true} /> {e}
+                    <li key={i} data-id={i}>
+                        <div className="flex align-center justify-between w-fit">
+                            <input type="checkbox" defaultChecked={true} />
+                            <div className="ml-1 mr-2 mt-1 mb-1">{e}</div>
+                            <button onClick={(e) => deleteItem(e.target, "check")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
                         </div>
                     </li>
                 ))}
