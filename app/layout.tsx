@@ -15,8 +15,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       };
     };
   };
+  const searchUser = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault;
+  };
 
   const [username, setUsername] = useState("Log in");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getUser();
@@ -30,7 +34,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <div className="mt-5 flex justify-around">
           <a className="hover:cursor-pointer" href="/"><Image src={homeIcon} width={45} height={45} alt="home icon" /></a>
-          <div className="">NOTE BOOK</div>
+          <form>
+            <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search a user..." value={search} />
+            <button onClick={(e) => searchUser(e)} className="hover:cursor-pointer" type="submit" >Search</button>
+          </form>
           <a href="/login">{username}</a>
         </div>
         <div>{children}</div>

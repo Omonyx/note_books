@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Error", error: err }, { status: 400 });
     };
 };
-export async function GET(req: NextRequest, context: { params: Promise<{ CollectionId: string }> }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ collectionId: string }> }) {
     await dbConnect();
-    const { CollectionId } = await context.params;
-    const collection = await Collection.findOne({ id: CollectionId });
+    const { collectionId } = await context.params;
+    const collection = await Collection.findOne({ id: collectionId });
     
     if (!collection) return NextResponse.json({ message: "Collection isn't registred" }, { status: 404 });
     return NextResponse.json({ message: "Collection finded" , data: collection }, { status: 201 });
