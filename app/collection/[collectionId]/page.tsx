@@ -16,7 +16,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
         };
     };
     const saveItems = async () => {
-        const response = await fetch(`http://localhost:3000/api/collection/${collectionId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/collection/${collectionId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -30,7 +30,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
         };
     };
     const getCollection = async () => {
-        const response = await fetch(`http://localhost:3000/api/collection/${collectionId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/collection/${collectionId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             alert('You aren\'t connected !');
             window.location.href = '../../login';
         } else {
-            const response = await fetch(`http://localhost:3000/api/usr/id/${idUser}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${idUser}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

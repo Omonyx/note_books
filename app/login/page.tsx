@@ -6,7 +6,7 @@ export default function LogInPage() {
     const getUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (certify_data()) {
-            const response = await fetch(`/api/usr/login`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -8,7 +8,7 @@ import "./globals.css";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const getUser = async () => {
     if (localStorage.getItem("tokener")) {
-      const response = await fetch(`http://localhost:3000/api/usr/id/${localStorage.getItem("tokener")}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${localStorage.getItem("tokener")}`);
       if (response.ok) {
         const infos = await response.json();
         setUsername(infos.data.username);

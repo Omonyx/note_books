@@ -9,7 +9,7 @@ export default function SignInPage() {
             setStyleUsername('bg-green-600');
             setStyleEmail('bg-green-600');
             setStylePassword('bg-green-600');
-            const response = await fetch(`/api/usr/${username}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/${username}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

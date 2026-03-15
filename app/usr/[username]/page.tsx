@@ -8,7 +8,7 @@ export default function UserPage({ params }: any) {
     const getUser = async () => {
         const { username } = await params;
         setUsername(username);
-        const response = await fetch(`http://localhost:3000/api/usr/${username}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/${username}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function UserPage({ params }: any) {
                     const g = Math.floor(Math.random() * 255);
 
                     return (
-                        <li key={i} style={{ backgroundColor: `rgb(20, ${g}, 20)` }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={"http://localhost:3000/collection/" + e}>{data.data.collections.name[i]}</a></li>
+                        <li key={i} style={{ backgroundColor: `rgb(20, ${g}, 20)` }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e}>{data.data.collections.name[i]}</a></li>
                     );
                 })}
             </ul>
