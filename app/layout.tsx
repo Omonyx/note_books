@@ -4,6 +4,7 @@ import Image from "next/image";
 import homeIcon from '../public/homeIcon.png';
 import { useState, useEffect } from "react";
 import "./globals.css";
+import SearchBar from "./components/SearchBar/SearchBar";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const getUser = async () => {
@@ -16,13 +17,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       };
     };
   };
-  const searchUser = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault;
-  };
 
   const [username, setUsername] = useState("Log in");
   const [linkUsername, setLinkUsername] = useState("/login");
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getUser();
@@ -36,10 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <div className="mt-5 flex justify-around">
           <a className="hover:cursor-pointer" href="/"><Image src={homeIcon} width={45} height={45} alt="home icon" /></a>
-          <form>
-            <input onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search a user..." value={search} />
-            <button onClick={(e) => searchUser(e)} className="hover:cursor-pointer" type="submit" >Search</button>
-          </form>
+          <SearchBar />
           <a href={linkUsername}>{username}</a>
         </div>
         <div>{children}</div>

@@ -18,10 +18,10 @@ export default async function UserPage({ params }: any) {
             <h1>Profil de {username}</h1>
             <div>My collections : </div>
             <ul>
-                {data?.data?.collections?.id?.map((e: any, i: number) => {
+                {data?.data[0]?.collections?.id?.map((e: any, i: number) => {
                     const g = Math.floor(Math.random() * 255);
                     return (
-                        <li key={i} style={{ backgroundColor: `rgb(20, ${g}, 20)` }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e}>{data.data.collections.name[i]}</a></li>
+                        <li key={i} style={{ backgroundColor: `rgb(20, ${g}, 20)` }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e}>{data.data[0].collections.name[i]}</a></li>
                     );
                 })}
             </ul>

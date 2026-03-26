@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
     const hash = crypto.SHA256(salt + body.password).toString(crypto.enc.Base64);
     await User.create({
         username: body.username,
+        username_lower: body.username.toLowerCase(),
         email: body.email,
         collections: { id: [], name: [] },
         token,
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest, context: { params: Promise<{ username: string }> }) {
   await dbConnect();
   const { username } = await context.params;
-  const user = await User.findOne({ username: username });
+  const user = await User.find({ username_lower: { $regex: "^" + username.toLowerCase() } }).limit(5);
 
   if (!user) return NextResponse.json({ message: "User isn't registred" }, { status: 404 });
   return NextResponse.json({ message: "User finded" , data: user }, { status: 201 });
