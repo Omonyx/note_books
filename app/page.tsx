@@ -1,4 +1,7 @@
+"use client";
+
 export default function Home() {
+
   return (
     <div>
       <div>Go to <a className="text-blue-600" href="./signin/">sign in</a> !</div>

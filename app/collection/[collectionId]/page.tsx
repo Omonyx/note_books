@@ -3,6 +3,7 @@
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import trash from "../../../public/trash.png";
+import SearchBar from "../../../components/SearchBar/SearchBar";
 
 export default function collectionPage({ params }: { params: Promise<{ collectionId: string }> }) {
     const addNewItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,7 +60,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
                 console.log('problem');
             } else {
                 const user = await response.json();
-                const allCollection = new Set(user.data.collections.id);
+                const allCollection = new Set(user.data.collections);
                 if (!allCollection.has(collectionId)) {
                     alert('You aren\'t in this note collection !');
                     window.location.href = '../../';
@@ -114,6 +115,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     const [itemValue, setItemValue] = useState("");
     const [checkedOne, setCheckedOne] = useState(true);
     const { collectionId } = use(params);
+    const [test, setTest] = useState("");
 
     useEffect(() => {
         userCertify();
@@ -122,7 +124,10 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
 
     return (
         <div>
-            <h2>COLLECTION PAGE : {data?.name}</h2>
+            <div className="flex justify-between mr-2 ml-2">
+                <h2>COLLECTION PAGE : {data?.name}</h2>
+                <SearchBar adder={true} />
+            </div>
             <form>
                 <input onChange={(e) => setItemValue(e.target.value)} className={itemStyle} type="text" placeholder="Add item" value={itemValue} />
                 <button onClick={(e) => addNewItem(e)} type="submit">Add</button>

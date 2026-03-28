@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import homeIcon from '../public/homeIcon.png';
 import { useState, useEffect } from "react";
+import SearchBar from "../components/SearchBar/SearchBar";
 import "./globals.css";
-import SearchBar from "./components/SearchBar/SearchBar";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const getUser = async () => {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     };
   };
 
+  const pathname = usePathname();
   const [username, setUsername] = useState("Log in");
   const [linkUsername, setLinkUsername] = useState("/login");
 
@@ -31,9 +33,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <title>Note book</title>
       </head>
       <body>
-        <div className="mt-5 flex justify-around">
+        <div className="mt-5 mr-40 ml-40 flex justify-between">
           <a className="hover:cursor-pointer" href="/"><Image src={homeIcon} width={45} height={45} alt="home icon" /></a>
-          <SearchBar />
+          {pathname === "/" ? <SearchBar adder={false} /> : ""}
           <a href={linkUsername}>{username}</a>
         </div>
         <div>{children}</div>

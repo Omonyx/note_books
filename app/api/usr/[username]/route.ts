@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         username: body.username,
         username_lower: body.username.toLowerCase(),
         email: body.email,
-        collections: { id: [], name: [] },
+        collections: [],
         token,
         salt,
         hash,

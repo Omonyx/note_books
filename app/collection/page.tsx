@@ -30,8 +30,7 @@ export default function CollectionHandlePage() {
     };
     const addCollectionToUser = async (collectionId: String) => {
         const userId = localStorage.getItem('tokener');
-        console.log(userId);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${userId}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${userId}`, {
             method: 'PATCH',
             headers: {
                     "Content-Type": "application/json",
