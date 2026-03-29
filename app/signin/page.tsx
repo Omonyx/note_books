@@ -31,11 +31,11 @@ export default function SignInPage() {
         };
     };
     const certify_data = (): boolean => {
-        if (username === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) || !/^[^\s]{8,}$/.test(password)) {
-            if (username === '') {
+        if ((25 > username.length && username.length > 0) || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) || !/^[^\s]{8,}$/.test(password)) {
+            if ((25 >= username.length && username.length > 0)) {
                 setStyleUsername('bg-red-900');
-                console.log("Missing username !");
-                alert("Missing username !");
+                console.log("Invalid username (Between 1 and 25 characters) !");
+                alert("Invalid username (Between 1 and 25 characters) !");
                 return false;
             } else setStyleUsername('bg-green-600');
             if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {

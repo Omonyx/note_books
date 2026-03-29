@@ -26,7 +26,7 @@ export default function searchBar({ adder }: Props) {
     };
     const addUserInCollection = async (e: React.MouseEvent<HTMLButtonElement>, userId: String) => {
         e.preventDefault();
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${userId}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/id/${userId}`, {
             method: 'PATCH',
             headers: {
                     "Content-Type": "application/json",
@@ -34,6 +34,9 @@ export default function searchBar({ adder }: Props) {
             body: JSON.stringify({ "collectionId": pathname.substring(12, pathname.length) }),
             },
         );
+        alert("User added !");
+        setResultSearch([]);
+        setSearch("");
     };
 
     const pathname = usePathname();
@@ -46,11 +49,11 @@ export default function searchBar({ adder }: Props) {
 
     return (
         <form className="relative">
-            <input className="ml-4" onChange={(e) => setSearch(`${e.target.value}`)} type="text" placeholder={adder ? "Add user" : "Search a user..."} value={search} />
+            <input className="ml-4 border-3 pl-2 pt-1 pb-1 rounded-xl focus:outline-none focus:ring-0" onChange={(e) => setSearch(`${e.target.value}`)} type="text" placeholder={adder ? "Add user" : "Search a user..."} value={search} />
             <div>
-                {resultSearch.length === 0 ? (<div></div>) : (
-                    <div className="absolute left-0 w-full mt-2 border-2 p-2 border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
-                        {resultSearch.map((e: any, i: number) => {
+                {resultSearch.length === 0 ? "" : (
+                    <div className="absolute bg-[rgb(10,10,10)] left-0 w-full mt-2 border-2 p-2 border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                        {resultSearch.map((e: any, i: number) => {// #0A0A0A - #171717
                             return (
                                 <div className="flex items-center justify-between rounded pl-2 pt-1 pb-1 pr-2 duration-300 hover:text-black hover:bg-gray-200 hover:cursor-pointer" key={i}>
                                     <a href={`/usr/${e.username_lower}`}>{e.username}</a>
@@ -61,7 +64,6 @@ export default function searchBar({ adder }: Props) {
                     </div>
                 )}
             </div>
-            
         </form>
     )
 }

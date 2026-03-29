@@ -41,7 +41,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             const { data } = await response.json();
             setData(data);
         } else {
-            alert('error');
+            alert("This collection isn't registred");
         };
     };
     const userCertify = async () => {
@@ -109,13 +109,15 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             deleteItem(parseInt(li.dataset.id), false);
         };
     };
+    const upperInitial = (str: String) => {
+        return str[0].toUpperCase() + str.substring(1, str.length);
+    };
 
     const [data, setData] = useState<any>(null);
     const [itemStyle, setItemStyle] = useState("bg-green-600");
     const [itemValue, setItemValue] = useState("");
     const [checkedOne, setCheckedOne] = useState(true);
     const { collectionId } = use(params);
-    const [test, setTest] = useState("");
 
     useEffect(() => {
         userCertify();
@@ -124,37 +126,40 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
 
     return (
         <div>
-            <div className="flex justify-between mr-2 ml-2">
+            <div className="flex justify-between items-center mr-2 ml-2">
                 <h2>COLLECTION PAGE : {data?.name}</h2>
                 <SearchBar adder={true} />
             </div>
-            <form>
-                <input onChange={(e) => setItemValue(e.target.value)} className={itemStyle} type="text" placeholder="Add item" value={itemValue} />
+            <form className="mt-5 mb-5">
+                <input onChange={(e) => setItemValue(e.target.value)} className={`${itemStyle} mr-2`} type="text" placeholder="Add item" value={itemValue} />
                 <button onClick={(e) => addNewItem(e)} type="submit">Add</button>
+                <button onClick={() => saveItems()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</button>
             </form>
-            <ul id="uncheck">
-                {data?.pageListUnchecked?.map((e: any, i: number) => (
-                    <li key={i} data-id={i}>
-                        <div className="flex align-center justify-between w-fit">
-                            <input onChange={() => changeCheck(i, false)} className="accent-green-600" type="checkbox" checked={!checkedOne} />
-                            <div className="ml-1 mr-2 mt-1 mb-1">{e}</div>
-                            <button onClick={(e) => deleteItemElement(e.target, "uncheck")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            <ul id="check">
-                {data?.pageListChecked?.map((e: any, i: number) => (
-                    <li key={i} data-id={i}>
-                        <div className="flex align-center justify-between w-fit">
-                            <input onChange={() => changeCheck(i, true)} className="accent-green-600" type="checkbox" checked={checkedOne} />
-                            <div className="ml-1 mr-2 mt-1 mb-1">{e}</div>
-                            <button onClick={(e) => deleteItemElement(e.target, "check")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            <div onClick={() => saveItems()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</div>
+            <div className="flex justify-around">
+                <ul className="mt-5 mb-5" id="uncheck">
+                    {data?.pageListUnchecked?.map((e: any, i: number) => (
+                        <li key={i} data-id={i}>
+                            <div className="flex align-center justify-between w-fit">
+                                <input onChange={() => changeCheck(i, false)} className="accent-green-600" type="checkbox" checked={!checkedOne} />
+                                <div className="ml-1 mr-2 mt-1 mb-1">{upperInitial(e)}</div>
+                                <button onClick={(e) => deleteItemElement(e.target, "uncheck")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+                <div className="bg-white w-2 h-auto rounded"></div>
+                <ul className="mt-5 mb-5" id="check">
+                    {data?.pageListChecked?.map((e: any, i: number) => (
+                        <li key={i} data-id={i}>
+                            <div className="flex align-center justify-between w-fit">
+                                <input onChange={() => changeCheck(i, true)} className="accent-green-600" type="checkbox" checked={checkedOne} />
+                                <div className="ml-1 mr-2 mt-1 mb-1">{upperInitial(e)}</div>
+                                <button onClick={(e) => deleteItemElement(e.target, "check")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

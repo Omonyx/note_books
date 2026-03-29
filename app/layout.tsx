@@ -33,10 +33,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <title>Note book</title>
       </head>
       <body>
-        <div className="mt-5 mr-40 ml-40 flex justify-between">
-          <a className="hover:cursor-pointer" href="/"><Image src={homeIcon} width={45} height={45} alt="home icon" /></a>
-          {pathname === "/" ? <SearchBar adder={false} /> : ""}
-          <a href={linkUsername}>{username}</a>
+        <div className="mb-10 pt-5 pb-5 flex justify-around items-center border-b-3">
+          <a className="hover:cursor-pointer" href="/"><Image src={homeIcon} width={55} height={55} alt="home icon" /></a>
+          {pathname === "/" ? <SearchBar adder={false} /> : <div className="w-20"></div>}
+          <a className="text-2xl" href={linkUsername}>{username}</a>
         </div>
         <div>{children}</div>
       </body>
