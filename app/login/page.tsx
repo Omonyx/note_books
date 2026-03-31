@@ -59,4 +59,4 @@ export default function LogInPage() {
             <div>You don't have an account ? Come to <a className="text-blue-600" href="../signin">sign in</a> !</div>
         </div>
     );
-}
+};
