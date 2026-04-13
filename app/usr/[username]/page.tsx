@@ -27,9 +27,8 @@ export default async function UserPage({ params }: any) {
             <div>My collections : </div>
             <ul>
                 {collections?.data?.map((e: any, i: number) => {
-                    const g = Math.floor(Math.random() * 255);
                     return (
-                        <li key={i} style={{ backgroundColor: `rgb(20, ${g}, 20)` }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e.id}>{e.name}</a></li>
+                        <li key={i} style={{ backgroundColor: e.color }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e.id}>{e.name}</a></li>
                     );
                 })}
             </ul>

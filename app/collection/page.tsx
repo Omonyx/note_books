@@ -12,7 +12,7 @@ export default function CollectionHandlePage() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ "name": inputValue }),
+                body: JSON.stringify({ "name": inputValue, "color": colorValue }),
             });
             const messageRes = await response.json();
             console.log(messageRes.message);
@@ -42,13 +42,15 @@ export default function CollectionHandlePage() {
     };
 
     const [inputValue, setInputValue] = useState("");
+    const [colorValue, setColorValue] = useState("#ff0000");
     const [inputStyle, setInputStyle] = useState("bg-green-600");
 
     return (
         <div>
-            <form>
+            <form className="flex items-center">
                 <input onChange={(e) => setInputValue(e.target.value)} className={inputStyle} type="text" placeholder="Collection name" value={inputValue}/>
-                <button className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer" onClick={(e) => createCollection(e)} type="submit">Create</button>
+                <input className="ml-1 mr-5" onChange={(e) => setColorValue(e.target.value)} type="color" value={colorValue} />
+                <button className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer" onClick={(e) => createCollection(e)} type="submit">Create</button>
             </form>
         </div>
     )

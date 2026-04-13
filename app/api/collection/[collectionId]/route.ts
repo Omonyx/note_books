@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
         await Collection.create({
             id: idCollection,
             name: body.name,
+            color: body.color,
             pageListUnchecked: [],
             pageListChecked: [],
         });
@@ -29,13 +30,15 @@ export async function GET(req: NextRequest, context: { params: Promise<{ collect
 };
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ collectionId: string }> }) {
     await dbConnect();
-    const { check, uncheck } = await req.json();
+    const { name, color, check, uncheck } = await req.json();
     const { collectionId } = await params;
     const taskToUpdate = await Collection.findOne({ id: collectionId });
 
     if (!taskToUpdate) {
         return NextResponse.json({ error: "Collection not found" }, { status: 404 });
     }
+    taskToUpdate.name = name;
+    taskToUpdate.color = color;
     taskToUpdate.pageListChecked = check;
     taskToUpdate.pageListUnchecked = uncheck;
     await taskToUpdate.save();

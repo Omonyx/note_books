@@ -3,6 +3,7 @@
 import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import trash from "../../../public/trash.png";
+import pencil from "../../../public/pencil.png";
 import SearchBar from "../../../components/SearchBar/SearchBar";
 
 export default function collectionPage({ params }: { params: Promise<{ collectionId: string }> }) {
@@ -16,13 +17,13 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             setItemStyle("bg-red-900");
         };
     };
-    const saveItems = async () => {
+    const saveCollection = async () => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/collection/${collectionId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             }, 
-            body: JSON.stringify({ "check": data.pageListChecked, "uncheck": data.pageListUnchecked }),
+            body: JSON.stringify({ name: data.name, color: data.color, "check": data.pageListChecked, "uncheck": data.pageListUnchecked }),
         });
         if (!response.ok) {
             console.log(response);
@@ -83,22 +84,22 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
         if (checked) {
             let new_checkedList = data.pageListChecked;
             new_checkedList.unshift(item);
-            setData({ id: data.id, name: data.name, pageListChecked: new_checkedList, pageListUnchecked: data.pageListUnchecked });
+            setData({ id: data.id, name: data.name, color: data.color, pageListChecked: new_checkedList, pageListUnchecked: data.pageListUnchecked });
         } else {
             let new_uncheckedList = data.pageListUnchecked;
             new_uncheckedList.unshift(item);
-            setData({ id: data.id, name: data.name, pageListChecked: data.pageListChecked, pageListUnchecked: new_uncheckedList });
+            setData({ id: data.id, name: data.name, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: new_uncheckedList });
         };
     };
     const deleteItem = (index: number, checked: Boolean) => {
         if (checked) {
             const new_checkedList = data.pageListChecked;
             new_checkedList.splice(index, 1);
-            setData({id: data.id, name: data.name, pageListChecked: new_checkedList, pageListUnchecked: data.pageListUnchecked});
+            setData({id: data.id, name: data.name, color: data.color, pageListChecked: new_checkedList, pageListUnchecked: data.pageListUnchecked});
         } else {
             let new_uncheckedList = data.pageListUnchecked;
             new_uncheckedList.splice(index, 1);
-            setData({id: data.id, name: data.name, pageListChecked: data.pageListChecked, pageListUnchecked: new_uncheckedList});
+            setData({id: data.id, name: data.name, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: new_uncheckedList});
         };
     };
     const deleteItemElement = (item: any, version: String) => {
@@ -111,6 +112,10 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     };
     const upperInitial = (str: String) => {
         return str[0].toUpperCase() + str.substring(1, str.length);
+    };
+    const changeCollectionName = () => {
+        const newName = prompt("Change the collection's name", data.name);
+        setData({id: data.id, name: newName, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: data.pageListUnchecked});
     };
 
     const [data, setData] = useState<any>(null);
@@ -126,14 +131,18 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
 
     return (
         <div>
-            <div className="flex justify-between items-center mr-2 ml-2">
-                <h2>COLLECTION PAGE : {data?.name}</h2>
+            <div className="flex justify-between items-center mr-5 ml-5">
+                <div className="flex items-center">
+                    <h2 className="text-6xl">{data?.name}</h2>
+                    <input onChange={(e) => setData({id: data.id, name: data.name, color: e.target.value, pageListChecked: data.pageListChecked, pageListUnchecked: data.pageListUnchecked})} className="ml-4 mr-10" type="color" value={data?.color ? data.color : "#ff0000"} />
+                    <Image onClick={() => changeCollectionName()} src={pencil} width={24} height={24} alt="Edit" />
+                </div>
                 <SearchBar adder={true} />
             </div>
             <form className="mt-5 mb-5">
                 <input onChange={(e) => setItemValue(e.target.value)} className={`${itemStyle} mr-2`} type="text" placeholder="Add item" value={itemValue} />
                 <button onClick={(e) => addNewItem(e)} type="submit">Add</button>
-                <button onClick={() => saveItems()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</button>
+                <button onClick={() => saveCollection()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</button>
             </form>
             <div className="flex justify-around">
                 <ul className="mt-5 mb-5" id="uncheck">
