@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function CollectionHandlePage() {
     const createCollection = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (inputValue !== "") {
+        if (0 < inputValue.length && inputValue.length < 23) {
             setInputStyle("bg-green-600");
             const response = await fetch(`/api/collection/${inputValue}`, {
                 method: "POST",
@@ -24,8 +24,8 @@ export default function CollectionHandlePage() {
             };
         } else {
             setInputStyle("bg-red-900");
-            console.log("Missing name !");
-            alert("Missing name !");
+            console.log("Collection name must be between 1 and 22 characters long !");
+            alert("Collection name must be between 1 and 22 characters long !");
         };
     };
     const addCollectionToUser = async (collectionId: String) => {

@@ -65,6 +65,8 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
                 if (!allCollection.has(collectionId)) {
                     alert('You aren\'t in this note collection !');
                     window.location.href = '../../';
+                } else {
+                    setUserVerified(true);
                 };
             };
         };
@@ -115,12 +117,19 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     };
     const changeCollectionName = () => {
         const newName = prompt("Change the collection's name", data.name);
-        setData({id: data.id, name: newName, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: data.pageListUnchecked});
+        if (newName !== null) {
+            setData({id: data.id, name: newName, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: data.pageListUnchecked});
+        };
+    };
+    const hexToRgb = (hex: String) => {
+        if (!hex) return "255 0 0";
+        return `${parseInt(hex.substring(1, 3), 16)} ${parseInt(hex.substring(3, 5), 16)} ${parseInt(hex.substring(5, 7), 16)}`;
     };
 
     const [data, setData] = useState<any>(null);
     const [itemStyle, setItemStyle] = useState("bg-green-600");
     const [itemValue, setItemValue] = useState("");
+    const [userVerified, setUserVerified] = useState(false);
     const [checkedOne, setCheckedOne] = useState(true);
     const { collectionId } = use(params);
 
@@ -130,7 +139,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     }, []);
 
     return (
-        <div>
+        <div style={{ "--bg-color": hexToRgb(data?.color) } as React.CSSProperties} className="bg-[rgb(var(--bg-color)/0.2)] bg-[url('/background.png')]">
             <div className="flex justify-between items-center mr-5 ml-5">
                 <div className="flex items-center">
                     <h2 className="text-6xl">{data?.name}</h2>
@@ -146,10 +155,10 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             </form>
             <div className="flex justify-around">
                 <ul className="mt-5 mb-5" id="uncheck">
-                    {data?.pageListUnchecked?.map((e: any, i: number) => (
+                    {userVerified && data?.pageListUnchecked?.map((e: any, i: number) => (
                         <li key={i} data-id={i}>
                             <div className="flex align-center justify-between w-fit">
-                                <input onChange={() => changeCheck(i, false)} className="accent-green-600" type="checkbox" checked={!checkedOne} />
+                                <input onChange={() => changeCheck(i, false)} style={{ accentColor: data.color }} type="checkbox" checked={!checkedOne} />
                                 <div className="ml-1 mr-2 mt-1 mb-1">{upperInitial(e)}</div>
                                 <button onClick={(e) => deleteItemElement(e.target, "uncheck")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
                             </div>
@@ -158,10 +167,10 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
                 </ul>
                 <div className="bg-white w-2 h-auto rounded"></div>
                 <ul className="mt-5 mb-5" id="check">
-                    {data?.pageListChecked?.map((e: any, i: number) => (
+                    {userVerified && data?.pageListChecked?.map((e: any, i: number) => (
                         <li key={i} data-id={i}>
                             <div className="flex align-center justify-between w-fit">
-                                <input onChange={() => changeCheck(i, true)} className="accent-green-600" type="checkbox" checked={checkedOne} />
+                                <input onChange={() => changeCheck(i, true)} style={{ accentColor: data.color }} type="checkbox" checked={checkedOne} />
                                 <div className="ml-1 mr-2 mt-1 mb-1">{upperInitial(e)}</div>
                                 <button onClick={(e) => deleteItemElement(e.target, "check")}><Image src={trash} width={24} height={24} alt='Trash' /></button>
                             </div>

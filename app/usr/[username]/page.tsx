@@ -1,6 +1,13 @@
 "use server";
 
 export default async function UserPage({ params }: any) {
+    const chooseColor = (hexa: String) => {
+        const color = parseInt(hexa.replace("#", ""), 16);
+        const {r, b, g} = { r: (color >> 16) & 255, g: (color >> 8) & 255, b: color & 255 };
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness > 128 ? "black" : "white";
+    };
+
     const { username } = await params;
     const response_user = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/${username}`, {
         method: "GET",
@@ -28,7 +35,7 @@ export default async function UserPage({ params }: any) {
             <ul>
                 {collections?.data?.map((e: any, i: number) => {
                     return (
-                        <li key={i} style={{ backgroundColor: e.color }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e.id}>{e.name}</a></li>
+                        <li key={i} style={{ backgroundColor: e.color, color: chooseColor(e.color) }} className={`rounded-xl w-fit pr-2 pl-2 pt-1 pb-1`}><a href={`${process.env.NEXT_PUBLIC_URL}/collection/` + e.id}>{e.name}</a></li>
                     );
                 })}
             </ul>
