@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import BasicInput from "../../components/BasicInput/BasicInput";
 
 export default function SignInPage() {
     const addUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (certify_data()) {
-            setStyleUsername('bg-green-600');
-            setStyleEmail('bg-green-600');
-            setStylePassword('bg-green-600');
             const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/usr/${username}`, {
                 method: "POST",
                 headers: {
@@ -17,8 +15,8 @@ export default function SignInPage() {
                 body: JSON.stringify({ "username": username, "email": email, "password": password }),
             });
             if (!response.ok) {
-                setStyleUsername('bg-red-900');
-                setStyleEmail('bg-red-900');
+                setStyleUsername('rgb(100,10,10)');
+                setStyleEmail('rgb(100,10,10)');
                 setUsername('');
                 setEmail('');
             } else {
@@ -34,39 +32,52 @@ export default function SignInPage() {
         console.log(username);
         if ((25 >= username.length && username.length > 0) || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email) || !/^[^\s]{8,}$/.test(password)) {
             if ((25 < username.length && username.length <= 0)) {
-                setStyleUsername('bg-red-900');
+                setStyleUsername('rgb(100,10,10)');
                 console.log("Invalid username (Between 1 and 25 characters) !");
                 alert("Invalid username (Between 1 and 25 characters) !");
                 return false;
-            } else setStyleUsername('bg-green-600');
+            };
             if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-                setStyleEmail('bg-red-900');
+                setStyleEmail('rgb(100,10,10)');
                 console.log("Invalid email !");
                 alert("Invalid email !");
                 return false;
-            } else setStyleEmail('bg-green-600');
+            };
             if (!/^[^\s]{8,}$/.test(password)) {
-                setStylePassword('bg-red-900');
+                setStylePassword('rgb(100,10,10)');
                 console.log("Invalid password (minimum 8 characters)");
                 alert("Invalid password (minimum 8 characters)");
                 return false;
-            } else setStylePassword('bg-green-600');
+            };
         };
         return true;
     };
+    const changeStyleUsername = (e: string) => {
+        setUsername(e);
+        setStyleUsername("rgb(10,10,10)");
+    };
+    const changeStyleEmail = (e: string) => {
+        setEmail(e);
+        setStyleEmail("rgb(10,10,10)");
+    };
+    const changeStylePassword = (e: string) => {
+        setPassword(e);
+        setStylePassword("rgb(10,10,10)");
+    };
+
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [styleUsername, setStyleUsername] = useState("bg-green-600");
-    const [styleEmail, setStyleEmail] = useState("bg-green-600");
-    const [stylePassword, setStylePassword] = useState("bg-green-600");
+    const [styleUsername, setStyleUsername] = useState("rgb(10,10,10)");
+    const [styleEmail, setStyleEmail] = useState("rgb(10,10,10)");
+    const [stylePassword, setStylePassword] = useState("rgb(10,10,10)");
 
     return (
         <div>
-            <form>
-                <input className={styleUsername} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" value={username} />
-                <input className={styleEmail} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" value={email}/>
-                <input className={stylePassword} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" value={password} />
+            <form className="flex mt-10 mb-5">
+                <BasicInput placeholderer="Username" value={username} color={styleUsername} changing={changeStyleUsername} />
+                <BasicInput placeholderer="Email" value={email} color={styleEmail} changing={changeStyleEmail} type="email" />
+                <BasicInput placeholderer="Password" value={password} color={stylePassword} changing={changeStylePassword} type="password" />
                 <button className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer" onClick={(e) => addUser(e)} type="submit">Submit</button>
             </form>
             <div>You already have an account ? Come to <a className="text-blue-600" href="../login">log in</a> !</div>

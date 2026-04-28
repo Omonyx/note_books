@@ -49,7 +49,7 @@ export default function searchBar({ adder }: Props) {
 
     return (
         <form className="relative">
-            <input className="ml-4 border-3 pl-2 pt-1 pb-1 rounded-xl focus:outline-none focus:ring-0" onChange={(e) => setSearch(`${e.target.value}`)} type="text" placeholder={adder ? "Add user" : "Search a user..."} value={search} />
+            <input className="bg-[rgb(10,10,10)] ml-4 border-3 pl-2 pt-1 pb-1 rounded-xl focus:outline-none focus:ring-0" onChange={(e) => setSearch(`${e.target.value}`)} type="text" placeholder={adder ? "Add user" : "Search a user..."} value={search} />
             <div>
                 {resultSearch.length === 0 ? "" : (
                     <div className="absolute bg-[rgb(10,10,10)] left-0 w-full mt-2 border-2 p-2 border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">

@@ -5,6 +5,7 @@ import Image from "next/image";
 import trash from "../../../public/trash.png";
 import pencil from "../../../public/pencil.png";
 import SearchBar from "../../../components/SearchBar/SearchBar";
+import BasicInput from "../../../components/BasicInput/BasicInput";
 
 export default function collectionPage({ params }: { params: Promise<{ collectionId: string }> }) {
     const addNewItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -13,14 +14,13 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             const set_items = new Set(data.pageListChecked.concat(data.pageListUnchecked));
             if (!set_items.has(itemValue)) {
                 addItem(itemValue, false);
-                setItemStyle("bg-green-600");
                 setItemValue("");
             } else {
-                setItemStyle("bg-red-900");
+                setInputColor("rgb(100, 10, 10)");
                 alert("This item is already registred in this collection !");
             };
         } else {
-            setItemStyle("bg-red-900");
+            setInputColor("rgb(100, 10, 10)");
         };
     };
     const saveCollection = async () => {
@@ -127,16 +127,20 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             setData({id: data.id, name: newName, color: data.color, pageListChecked: data.pageListChecked, pageListUnchecked: data.pageListUnchecked});
         };
     };
+    const changeValue = (e: string) => {
+        setItemValue(e);
+        setInputColor("rgb(10,10,10)");
+    };
     const hexToRgb = (hex: String) => {
         if (!hex) return "255 0 0";
         return `${parseInt(hex.substring(1, 3), 16)} ${parseInt(hex.substring(3, 5), 16)} ${parseInt(hex.substring(5, 7), 16)}`;
     };
 
     const [data, setData] = useState<any>(null);
-    const [itemStyle, setItemStyle] = useState("bg-green-600");
     const [itemValue, setItemValue] = useState("");
     const [userVerified, setUserVerified] = useState(false);
     const [checkedOne, setCheckedOne] = useState(true);
+    const [inputColor, setInputColor] = useState("rgb(10,10,10)");
     const { collectionId } = use(params);
 
     useEffect(() => {
@@ -145,7 +149,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     }, []);
 
     return (
-        <div style={{ "--bg-color": hexToRgb(data?.color) } as React.CSSProperties} className="bg-[rgb(var(--bg-color)/0.4)] bg-[url('/background.png')]">
+        <div style={{ "--bg-color": hexToRgb(data?.color) } as React.CSSProperties} className="pt-10 bg-[rgb(var(--bg-color)/0.4)] bg-[url('/background.png')]">
             <div className="flex justify-between items-center mr-5 ml-5">
                 <div className="flex items-center">
                     <h2 className="text-6xl">{data?.name}</h2>
@@ -154,10 +158,10 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
                 </div>
                 <SearchBar adder={true} />
             </div>
-            <form className="mt-5 mb-5">
-                <input onChange={(e) => setItemValue(e.target.value)} className={`${itemStyle} mr-2`} type="text" placeholder="Add item" value={itemValue} />
-                <button onClick={(e) => addNewItem(e)} type="submit">Add</button>
-                <button onClick={() => saveCollection()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-5 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</button>
+            <form className="flex mt-5">
+                <BasicInput placeholderer="Add item" value={itemValue} color={inputColor} changing={changeValue} />
+                <button onClick={(e) => addNewItem(e)} className="text-green-800 bg-green-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-2 duration-300 hover:text-green-500 hover:bg-green-800 hover:cursor-pointer" type="submit">Add</button>
+                <button onClick={() => saveCollection()} className="text-red-800 bg-red-500 pt-1 pb-1 pl-2 pr-2 rounded-lg ml-20 duration-300 hover:text-red-500 hover:bg-red-800 hover:cursor-pointer">Save</button>
             </form>
             <div className="flex justify-around">
                 <ul className="mt-5 mb-5" id="uncheck">
