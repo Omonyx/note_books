@@ -10,9 +10,15 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     const addNewItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (itemValue != "") {
-            addItem(itemValue, false);
-            setItemStyle("bg-green-600");
-            setItemValue("");
+            const set_items = new Set(data.pageListChecked.concat(data.pageListUnchecked));
+            if (!set_items.has(itemValue)) {
+                addItem(itemValue, false);
+                setItemStyle("bg-green-600");
+                setItemValue("");
+            } else {
+                setItemStyle("bg-red-900");
+                alert("This item is already registred in this collection !");
+            };
         } else {
             setItemStyle("bg-red-900");
         };
@@ -23,7 +29,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
             headers: {
                 "Content-Type": "application/json"
             }, 
-            body: JSON.stringify({ name: data.name, color: data.color, "check": data.pageListChecked, "uncheck": data.pageListUnchecked }),
+            body: JSON.stringify({ name: data.name, color: data.color, "check": data.pageListChecked.map((e: String, i: Number) => e.toLowerCase()), "uncheck": data.pageListUnchecked.map((e: String, i: Number) => e.toLowerCase()) }),
         });
         if (!response.ok) {
             console.log(response);
@@ -139,7 +145,7 @@ export default function collectionPage({ params }: { params: Promise<{ collectio
     }, []);
 
     return (
-        <div style={{ "--bg-color": hexToRgb(data?.color) } as React.CSSProperties} className="bg-[rgb(var(--bg-color)/0.2)] bg-[url('/background.png')]">
+        <div style={{ "--bg-color": hexToRgb(data?.color) } as React.CSSProperties} className="bg-[rgb(var(--bg-color)/0.4)] bg-[url('/background.png')]">
             <div className="flex justify-between items-center mr-5 ml-5">
                 <div className="flex items-center">
                     <h2 className="text-6xl">{data?.name}</h2>
